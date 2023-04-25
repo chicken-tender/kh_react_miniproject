@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import imgLogo from "../images/tier_logo.png";
 import AxiosApi from "../api/AxiosApi";
+import Modal from "../utils/Modal";
 
 const Container = styled.div`
   display: flex;
@@ -131,6 +132,16 @@ const Login = () => {
   const [isId, setIsId] = useState(false);
   const [isPw, setIsPw] = useState(false);
 
+  // 팝업 처리(모달)
+  const [modalOpen, setModalOpen] = useState(false);
+  const closeModal = () => {
+    setModalOpen(false);
+  }
+
+  const confirmBtn = () => {
+    console.log("확인 버튼 눌렸을 때 Test");
+  }
+
   const onChangeId = e => {
     // 5 ~ 20 자리의 영문자, 숫자, _로 이루어진 문자열 체크
     const regexId = /^\w{5,20}$/;
@@ -166,6 +177,7 @@ const Login = () => {
       navigate("/home");
     } else {
       console.log("로그인 에러!"); // 모달창 구현 후 호출
+      setModalOpen(true);
     }
   }
 
@@ -192,6 +204,8 @@ const Login = () => {
         <button className="enable-button" onClick={onClickLogin}>LOGIN</button>  :
         <button className="disable-button">LOGIN</button>}
       </div>
+      {/* 여기 안에 들어가는게 children */}
+      <Modal open={modalOpen} close={closeModal} type={true} confirm={confirmBtn} header="오류">아이디 및 패스워드가 맞지 않습니다. 다시 확인 해주세요. 🥹</Modal>
     </Container>
   );
 }
