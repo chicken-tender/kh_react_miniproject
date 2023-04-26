@@ -1,6 +1,6 @@
 // 로그인 페이지
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import imgLogo from "../images/tier_logo.png";
 import AxiosApi from "../api/AxiosApi";
@@ -45,6 +45,20 @@ const Container = styled.div`
     align-items:center;
     font-size: 12px;
     color: #999;
+  }
+  .signup {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    color: orange;
+    font-weight: 700;
+    margin-top: 10px;
+    margin-right: 40px;
+    font-size: 14px;
+    .link_style {
+      color: orange;
+      text-decoration: none;
+    }
   }
   .success {
     color: royalblue;
@@ -206,6 +220,9 @@ const Login = () => {
       </div>
       {/* 여기 안에 들어가는게 children */}
       <Modal open={modalOpen} close={closeModal} type={true} confirm={confirmBtn} header="오류">아이디 및 패스워드가 맞지 않습니다. 다시 확인 해주세요. 🥹</Modal>
+      <div className="signup">
+        <Link to="/Signup" className="link_style">회원 가입</Link>
+      </div>
     </Container>
   );
 }
