@@ -1,9 +1,24 @@
 // 메인 페이지
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AxiosApi from "../api/AxiosApi";
+import { useNavigate} from "react-router-dom";
+import { UserContext } from "../context/UserInfo";
 
 const Home = () => {
   const [memberInfo, setMemberInfo] = useState("");
+
+  // 🔥 로컬 스토리지 2번
+  const navigate = useNavigate();
+  const isLogin = window.localStorage.getItem("isLogin");
+  // const userId = window.localStorage.getItem("userId");
+  // const pwd = window.localStorage.getItem("password");
+
+  // 🔥 Context에서 값 읽기
+  const context = useContext(UserContext);
+  const {userId, password} = context;
+
+  if(isLogin !== "TRUE") navigate("/");
+  
   useEffect(() => {
     const memberInfo = async() => {
       const response = await AxiosApi.memberGet("ALL"); // 전체 조회
@@ -23,6 +38,8 @@ const Home = () => {
           <p>{member.join}</p>
         </div>
       ))}
+      <p>아이디 : {userId}</p>
+      <p>비밀번호 : {password}</p>
     </>
   );
 }

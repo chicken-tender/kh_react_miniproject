@@ -1,10 +1,11 @@
 // 로그인 페이지
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import imgLogo from "../images/tier_logo.png";
 import AxiosApi from "../api/AxiosApi";
 import Modal from "../utils/Modal";
+import { UserContext } from "../context/UserInfo";
 
 const Container = styled.div`
   display: flex;
@@ -134,6 +135,12 @@ const Input = styled.input`
 
 const Login = () => {
   const navigate = useNavigate();
+  // // 🔥 로그인 여부 플래그
+  // window.localStorage.setItem("isLogin", "FALSE");
+
+  // 🔥 Context API에 값을 저장
+  const context = useContext(UserContext);
+  const {setUserId, setPassword} = context;
 
   // 키보드 입력 받기
   const [inputId, setInputId] = useState("");
@@ -188,6 +195,13 @@ const Login = () => {
     const response = await AxiosApi.memberLogin(inputId, inputPw);
     console.log(response.data); // 디버깅 할 때는 data로 찍으면 보기 편함.
     if(response.data === true) {
+      // 🔥로컬 스토리지 저장
+      window.localStorage.setItem("userId", inputId);
+      window.localStorage.setItem("password", inputPw);
+      window.localStorage.setItem("isLogin", "TRUE");
+      // 🔥context에 저장
+      setUserId(inputId);
+      setPassword(inputPw);
       navigate("/home");
     } else {
       console.log("로그인 에러!"); // 모달창 구현 후 호출
